@@ -1,0 +1,4 @@
+flask_restplus
+pandas
+requests
+wheel
