@@ -14,8 +14,6 @@ import logging
 from datetime import datetime, date
 from direstplus.exceptions import RequestError
 import iFinDPy as ifind
-from direstplus.config import config
-
 logger = logging.getLogger(__name__)
 STR_FORMAT_DATE = '%Y-%m-%d'
 STR_FORMAT_DATETIME_WIND = '%Y-%m-%d %H:%M:%S'  # 2017-03-06 00:00:00
@@ -541,21 +539,3 @@ class THSDateQuery(Resource):
         ret_dic = ret_df.to_dict()
         # print('ret_dic:\n', ret_dic)
         return ret_dic
-
-
-def start_service():
-    ths_login = ifind.THS_iFinDLogin(config.THS_LOGIN_USER_NAME, config.THS_LOGIN_PASSWORD)
-    if ths_login == 0 or ths_login == -201:
-        logger.info('成功登陆')
-        try:
-            from direstplus import app
-            app.run(host="0.0.0.0", debug=True)
-        finally:
-            ifind.THS_iFinDLogout()
-            logger.info('成功登出')
-    else:
-        logger.error("登录失败")
-
-
-if __name__ == '__main__':
-    start_service()

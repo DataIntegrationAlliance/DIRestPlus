@@ -38,3 +38,21 @@ if has_api:
 
 
 # 加载 Wind 接口
+
+
+def start_service():
+    ths_login = ifind.THS_iFinDLogin(config.THS_LOGIN_USER_NAME, config.THS_LOGIN_PASSWORD)
+    if ths_login == 0 or ths_login == -201:
+        logger.info('成功登陆')
+        try:
+            from direstplus import app
+            app.run(host="0.0.0.0", debug=True)
+        finally:
+            ifind.THS_iFinDLogout()
+            logger.info('成功登出')
+    else:
+        logger.error("登录失败")
+
+
+if __name__ == '__main__':
+    start_service()
