@@ -1,4 +1,4 @@
-# DIRestPlus
+# DIRestPlus [![Build Status](https://travis-ci.org/DataIntegrationAlliance/DIRestPlus.svg?branch=master)](https://travis-ci.org/DataIntegrationAlliance/DIRestPlus)
 通过Flask-RESTPlus 构建接口框架，将Wind、iFinD、Choice等进行统一封装
 
 ### 外部环境依赖及安装配置
