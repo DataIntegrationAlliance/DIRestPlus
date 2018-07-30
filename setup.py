@@ -13,14 +13,14 @@ from setuptools import setup, find_packages
 with open("README.md", "r", encoding='utf-8') as rm:
     long_description = rm.read()
 
-setup(name='RestIFindPy',
-      version='0.0.5',
+setup(name='DIRestPlus',
+      version='0.1.0',
       description='基于Restplus实现同花顺iFinD接口分布式调用',
       long_description=long_description,
       long_description_content_type="text/markdown",
       author='MG',
       author_email='mmmaaaggg@163.com',
-      url='https://github.com/DataIntegrationAlliance/RestIFindPy',
+      url='https://github.com/DataIntegrationAlliance/DIRestPlus',
       packages=find_packages(),
       python_requires='>=3.5',
       classifiers=(
