@@ -25,15 +25,17 @@ api = Api(app,
           description='Wind、iFinD、Choice 接口封装API',
           )
 
+
 def start_service():
+    """启动RESTPlus服务"""
     # 加载 iFinD 接口
-    has_iFind_api = True
+    has_ifind_api = True
     try:
         import iFinDPy
     except ImportError:
-        has_iFind_api = False
+        has_ifind_api = False
 
-    if has_iFind_api:
+    if has_ifind_api:
         from direstplus.ifind import *
         logger.info('加载 iFinD 接口')
 
@@ -43,39 +45,33 @@ def start_service():
         else:
             logger.error("iFind 登录失败")
 
-
     # 加载 Wind 接口
-
-    has_Wind_api = True
+    has_wind_api = True
     try:
         import WindPy
     except ImportError:
-        has_Wind_api = False
+        has_wind_api = False
 
-    if has_Wind_api:
+    if has_wind_api:
         from direstplus.wind import *
         logger.info('加载 Wind 接口')
         if WindPy.w.isconnected():
             WindPy.w.start()
             logger.info('Wind 成功登陆')
-        else
+        else:
             logger.error("Wind 登录失败")
-
 
     try:
         from direstplus import app
         app.run(host="0.0.0.0", debug=True)
     finally:
-        if has_iFind_api:
+        if has_ifind_api:
             ifind.THS_iFinDLogout()
             logger.info('ifind 成功登出')
 
-        if has_Wind_api:
+        if has_wind_api:
             WindPy.w.close()
             logger.info('Wind 成功登出')
-    
-
-    
 
 
 if __name__ == '__main__':
