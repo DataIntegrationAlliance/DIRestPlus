@@ -25,57 +25,53 @@ api = Api(app,
           description='Wind、iFinD、Choice 接口封装API',
           )
 
+# 加载 iFinD 接口
+has_ifind_api = True
+try:
+    import iFinDPy
+    from direstplus.ifind import *
+    logger.info('加载 iFinD 接口')
+except ImportError:
+    has_ifind_api = False
+
+# 加载 Wind 接口
+has_wind_api = True
+try:
+    import WindPy
+    from direstplus.wind import *
+    logger.info('加载 Wind 接口')
+except ImportError:
+    has_wind_api = False
+
+
 def start_service():
-    # 加载 iFinD 接口
-    has_iFind_api = True
-    try:
-        import iFinDPy
-    except ImportError:
-        has_iFind_api = False
+    """启动RESTPlus服务"""
 
-    if has_iFind_api:
-        from direstplus.ifind import *
-        logger.info('加载 iFinD 接口')
-
+    if has_ifind_api:
         ths_login = ifind.THS_iFinDLogin(config.THS_LOGIN_USER_NAME, config.THS_LOGIN_PASSWORD)
         if ths_login == 0 or ths_login == -201:
             logger.info('iFind 成功登陆')
         else:
             logger.error("iFind 登录失败")
 
-
-    # 加载 Wind 接口
-
-    has_Wind_api = True
-    try:
-        import WindPy
-    except ImportError:
-        has_Wind_api = False
-
-    if has_Wind_api:
-        from direstplus.wind import *
-        logger.info('加载 Wind 接口')
+    if has_wind_api:
         if WindPy.w.isconnected():
             WindPy.w.start()
             logger.info('Wind 成功登陆')
-        else
+        else:
             logger.error("Wind 登录失败")
-
 
     try:
         from direstplus import app
         app.run(host="0.0.0.0", debug=True)
     finally:
-        if has_iFind_api:
+        if has_ifind_api:
             ifind.THS_iFinDLogout()
             logger.info('ifind 成功登出')
 
-        if has_Wind_api:
+        if has_wind_api:
             WindPy.w.close()
             logger.info('Wind 成功登出')
-    
-
-    
 
 
 if __name__ == '__main__':
