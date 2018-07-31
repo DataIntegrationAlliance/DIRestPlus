@@ -48,11 +48,7 @@ def start_service():
     """启动RESTPlus服务"""
 
     if has_ifind_api:
-        ths_login = ifind.THS_iFinDLogin(config.THS_LOGIN_USER_NAME, config.THS_LOGIN_PASSWORD)
-        if ths_login == 0 or ths_login == -201:
-            logger.info('iFind 成功登陆')
-        else:
-            logger.error("iFind 登录失败")
+        ths_login = ifind_login()
 
     if has_wind_api:
         if WindPy.w.isconnected():
@@ -66,8 +62,7 @@ def start_service():
         app.run(host="0.0.0.0", debug=True)
     finally:
         if has_ifind_api:
-            ifind.THS_iFinDLogout()
-            logger.info('ifind 成功登出')
+            ifind_logout()
 
         if has_wind_api:
             WindPy.w.close()

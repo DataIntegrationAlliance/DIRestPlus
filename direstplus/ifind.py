@@ -14,6 +14,7 @@ import logging
 from datetime import datetime, date
 from direstplus.exceptions import RequestError
 import iFinDPy as ifind
+from direstplus.config import config
 logger = logging.getLogger(__name__)
 STR_FORMAT_DATE = '%Y-%m-%d'
 STR_FORMAT_DATETIME_WIND = '%Y-%m-%d %H:%M:%S'  # 2017-03-06 00:00:00
@@ -165,6 +166,21 @@ def format_2_datetime_str(dt):
         return dt
 
 
+def ifind_login():
+    ths_login = ifind.THS_iFinDLogin(config.THS_LOGIN_USER_NAME, config.THS_LOGIN_PASSWORD)
+    if ths_login == 0 or ths_login == -201:
+        logger.info('iFind 成功登陆')
+    else:
+        logger.error("iFind 登录失败")
+    return ths_login
+
+
+def ifind_logout():
+    ths_logout = ifind.THS_iFinDLogout()
+    logger.info('ifind 成功登出')
+    return ths_logout
+
+
 @rec.route('/THS_DateSerial/')
 class THSDateSerial(Resource):
 
@@ -176,12 +192,21 @@ class THSDateSerial(Resource):
         # data_dic = request.json
         args = data_serial_parser.parse_args()
         logger.info('/THS_DateSerial/ args:%s' % args)
-        ret_data = ifind.THS_DateSerial(**args)
-        error_code = ret_data['errorcode']
-        if error_code != 0:
-            msg = ret_data['errmsg']
-            logger.error('THS_DateSerial(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
+        for nth in range(2):
+            ret_data = ifind.THS_DateSerial(**args)
+            error_code = ret_data['errorcode']
+            if error_code != 0:
+                # 错误处理
+                if error_code == -1010:
+                    ths_login = ifind_login()
+                    if ths_login != 0 or ths_login != -201:
+                        logger.error('尝试重新登陆失败')
+
+                msg = ret_data['errmsg']
+                logger.error('THS_DateSerial(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
 
         tables = ret_data['tables']
         table_count = len(tables)
@@ -215,12 +240,21 @@ class THSHighFrequenceSequence(Resource):
         # data_dic = request.json
         args = high_frequence_sequence_parser.parse_args()
         logger.info('/THS_HighFrequenceSequence/ args:%s' % args)
-        ret_data = ifind.THS_HighFrequenceSequence(**args)
-        error_code = ret_data['errorcode']
-        if error_code != 0:
-            msg = ret_data['errmsg']
-            logger.error('THS_HighFrequenceSequence(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
+        for nth in range(2):
+            ret_data = ifind.THS_HighFrequenceSequence(**args)
+            error_code = ret_data['errorcode']
+            if error_code != 0:
+                # 错误处理
+                if error_code == -1010:
+                    ths_login = ifind_login()
+                    if ths_login != 0 or ths_login != -201:
+                        logger.error('尝试重新登陆失败')
+
+                msg = ret_data['errmsg']
+                logger.error('THS_HighFrequenceSequence(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
 
         tables = ret_data['tables']
         table_count = len(tables)
@@ -254,12 +288,21 @@ class THSRealtimeQuotes(Resource):
         # data_dic = request.json
         args = realtime_quotes_parser.parse_args()
         logger.info('/THS_RealtimeQuotes/ args:%s' % args)
-        ret_data = ifind.THS_RealtimeQuotes(**args)
-        error_code = ret_data['errorcode']
-        if error_code != 0:
-            msg = ret_data['errmsg']
-            logger.error('THS_RealtimeQuotes(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
+        for nth in range(2):
+            ret_data = ifind.THS_RealtimeQuotes(**args)
+            error_code = ret_data['errorcode']
+            if error_code != 0:
+                # 错误处理
+                if error_code == -1010:
+                    ths_login = ifind_login()
+                    if ths_login != 0 or ths_login != -201:
+                        logger.error('尝试重新登陆失败')
+
+                msg = ret_data['errmsg']
+                logger.error('THS_RealtimeQuotes(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
 
         tables = ret_data['tables']
         table_count = len(tables)
@@ -293,12 +336,21 @@ class THSHistoryQuotes(Resource):
         # data_dic = request.json
         args = history_quotes_parser.parse_args()
         logger.info('/THS_HistoryQuotes/ args:%s' % args)
-        ret_data = ifind.THS_HistoryQuotes(**args)
-        error_code = ret_data['errorcode']
-        if error_code != 0:
-            msg = ret_data['errmsg']
-            logger.error('THS_HistoryQuotes(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
+        for nth in range(2):
+            ret_data = ifind.THS_HistoryQuotes(**args)
+            error_code = ret_data['errorcode']
+            if error_code != 0:
+                # 错误处理
+                if error_code == -1010:
+                    ths_login = ifind_login()
+                    if ths_login != 0 or ths_login != -201:
+                        logger.error('尝试重新登陆失败')
+
+                msg = ret_data['errmsg']
+                logger.error('THS_HistoryQuotes(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
 
         tables = ret_data['tables']
         table_count = len(tables)
@@ -332,12 +384,21 @@ class THSSnapshot(Resource):
         # data_dic = request.json
         args = snap_shot_parser.parse_args()
         logger.info('/THS_Snapshot/ args:%s' % args)
-        ret_data = ifind.THS_Snapshot(**args)
-        error_code = ret_data['errorcode']
-        if error_code != 0:
-            msg = ret_data['errmsg']
-            logger.error('THS_Snapshot(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
+        for nth in range(2):
+            ret_data = ifind.THS_Snapshot(**args)
+            error_code = ret_data['errorcode']
+            if error_code != 0:
+                # 错误处理
+                if error_code == -1010:
+                    ths_login = ifind_login()
+                    if ths_login != 0 or ths_login != -201:
+                        logger.error('尝试重新登陆失败')
+
+                msg = ret_data['errmsg']
+                logger.error('THS_Snapshot(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
 
         tables = ret_data['tables']
         table_count = len(tables)
@@ -371,12 +432,21 @@ class THSBasicData(Resource):
         # data_dic = request.json
         args = basic_data_parser.parse_args()
         logger.info('/THS_BasicData/ args:%s' % args)
-        ret_data = ifind.THS_BasicData(**args)
-        error_code = ret_data['errorcode']
-        if error_code != 0:
-            msg = ret_data['errmsg']
-            logger.error('THS_BasicData(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
+        for nth in range(2):
+            ret_data = ifind.THS_BasicData(**args)
+            error_code = ret_data['errorcode']
+            if error_code != 0:
+                # 错误处理
+                if error_code == -1010:
+                    ths_login = ifind_login()
+                    if ths_login != 0 or ths_login != -201:
+                        logger.error('尝试重新登陆失败')
+
+                msg = ret_data['errmsg']
+                logger.error('THS_BasicData(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
 
         tables = ret_data['tables']
         table_count = len(tables)
@@ -407,12 +477,20 @@ class THSDataPool(Resource):
         # data_dic = request.json
         args = data_pool_parser.parse_args()
         logger.info('/THS_DataPool/ args:%s' % args)
-        ret_data = ifind.THS_DataPool(**args)
-        error_code = ret_data['errorcode']
-        if error_code != 0:
-            msg = ret_data['errmsg']
-            logger.error('THS_DataPool(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
+        for nth in range(2):
+            ret_data = ifind.THS_DataPool(**args)
+            error_code = ret_data['errorcode']
+            if error_code != 0:
+                if error_code == -1010:
+                    ths_login = ifind_login()
+                    if ths_login != 0 or ths_login != -201:
+                        logger.error('尝试重新登陆失败')
+
+                msg = ret_data['errmsg']
+                logger.error('THS_DataPool(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
 
         tables = ret_data['tables']
         table_count = len(tables)
@@ -479,12 +557,21 @@ class THSEDBQuery(Resource):
         # data_dic = request.json
         args = edb_query_parser.parse_args()
         logger.info('/THS_EDBQuery/ args:%s' % args)
-        ret_data = ifind.THS_EDBQuery(**args)
-        error_code = ret_data['errorcode']
-        if error_code != 0:
-            msg = ret_data['errmsg']
-            logger.error('THS_EDBQuery(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
+        for nth in range(2):
+            ret_data = ifind.THS_EDBQuery(**args)
+            error_code = ret_data['errorcode']
+            if error_code != 0:
+                # 错误处理
+                if error_code == -1010:
+                    ths_login = ifind_login()
+                    if ths_login != 0 or ths_login != -201:
+                        logger.error('尝试重新登陆失败')
+
+                msg = ret_data['errmsg']
+                logger.error('THS_EDBQuery(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
 
         tables = ret_data['tables']
         table_count = len(tables)
@@ -519,12 +606,21 @@ class THSDateQuery(Resource):
         # data_dic = request.json
         args = date_query_parser.parse_args()
         logger.info('/THS_DateQuery/ args:%s' % args)
-        ret_data = ifind.THS_DateQuery(**args)
-        error_code = ret_data['errorcode']
-        if error_code != 0:
-            msg = ret_data['errmsg']
-            logger.error('THS_DateQuery(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
+        for nth in range(2):
+            ret_data = ifind.THS_DateQuery(**args)
+            error_code = ret_data['errorcode']
+            if error_code != 0:
+                # 错误处理
+                if error_code == -1010:
+                    ths_login = ifind_login()
+                    if ths_login != 0 or ths_login != -201:
+                        logger.error('尝试重新登陆失败')
+
+                msg = ret_data['errmsg']
+                logger.error('THS_DateQuery(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
 
         tables = ret_data['tables']
         table_count = len(tables)
