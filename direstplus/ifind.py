@@ -65,7 +65,7 @@ history_quotes_parser = reqparse.RequestParser().add_argument(
 ).add_argument(
     'jsonIndicator', type=str, help="指标，可以是单个指标也可以是多个指标，指标之间用分号(‘;’)隔开。例如'close;open'"
 ).add_argument(
-    'jsonparam', type=str, help="参数，可以是默认参数也根据说明可以对参数进行自定义赋值，参数和参数之间用逗号(‘，’)隔开，参数的赋值用冒号(‘:’)。例如' period:D,pricetype:1,rptcategory:1'"
+    'jsonparam', type=str, help="参数，可以是默认参数也根据说明可以对参数进行自定义赋值，参数和参数之间用逗号(‘，’)隔开，参数的赋值用冒号(‘:’)。例如'period:D,pricetype:1,rptcategory:1'"
 ).add_argument(
     'begintime', type=str, help="开始时间，时间格式为YYYY-MM-DD，例如2015-06-23"
 ).add_argument(
