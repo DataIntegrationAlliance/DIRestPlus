@@ -14,10 +14,10 @@ with open("README.md", "r", encoding='utf-8') as rm:
     long_description = rm.read()
 
 setup(name='DIRestPlus',
-      version='0.1.0',
+      version='0.1.1',
       description='基于Restplus实现同花顺iFinD接口分布式调用',
       long_description=long_description,
-      long_description_content_type="text/markdown",
+      long_description_content_type='text/markdown',
       author='MG',
       author_email='mmmaaaggg@163.com',
       url='https://github.com/DataIntegrationAlliance/DIRestPlus',
