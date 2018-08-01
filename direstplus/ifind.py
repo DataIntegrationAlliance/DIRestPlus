@@ -504,6 +504,7 @@ class THSDataPool(Resource):
                     data_df['ths_code'] = table['thscode']
                 data_df_list.append(data_df)
         ret_df = pd.concat(data_df_list)
+        ret_df.index = [str(idx) for idx in ret_df.index]
         # print('ret_df\n', ret_df)
         ret_dic = ret_df.to_dict()
         # print('ret_dic:\n', ret_dic)
