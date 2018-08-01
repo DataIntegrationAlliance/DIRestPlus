@@ -199,7 +199,10 @@ class THSDateSerial(Resource):
                 # 错误处理
                 if error_code == -1010:
                     ths_login = ifind_login()
-                    if ths_login != 0 or ths_login != -201:
+                    if ths_login == 0 or ths_login == -201:
+                        logger.warning('尝试重新登陆成功，再次调用函数')
+                        continue
+                    else:
                         logger.error('尝试重新登陆失败')
 
                 msg = ret_data['errmsg']
@@ -213,6 +216,9 @@ class THSDateSerial(Resource):
         data_df_list = []
         for nth_table in range(table_count):
             table = tables[nth_table]
+            if 'time' not in table:
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, table.shape)
+                continue
             date_list = table['time']
             date_len = len(date_list)
             if date_len > 0:
@@ -220,6 +226,11 @@ class THSDateSerial(Resource):
                 data_df = pd.DataFrame(data, index=date_list)
                 data_df['ths_code'] = table['thscode']
                 data_df_list.append(data_df)
+
+        # 若没有数据，返回空
+        if len(data_df_list) == 0:
+            return None
+
         ret_df = pd.concat(data_df_list)
         ret_df.index.rename('time', inplace=True)
         ret_df.reset_index(inplace=True)
@@ -247,7 +258,10 @@ class THSHighFrequenceSequence(Resource):
                 # 错误处理
                 if error_code == -1010:
                     ths_login = ifind_login()
-                    if ths_login != 0 or ths_login != -201:
+                    if ths_login == 0 or ths_login == -201:
+                        logger.warning('尝试重新登陆成功，再次调用函数')
+                        continue
+                    else:
                         logger.error('尝试重新登陆失败')
 
                 msg = ret_data['errmsg']
@@ -261,6 +275,9 @@ class THSHighFrequenceSequence(Resource):
         data_df_list = []
         for nth_table in range(table_count):
             table = tables[nth_table]
+            if 'time' not in table:
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, table.shape)
+                continue
             date_list = table['time']
             date_len = len(date_list)
             if date_len > 0:
@@ -268,6 +285,11 @@ class THSHighFrequenceSequence(Resource):
                 data_df = pd.DataFrame(data, index=date_list)
                 data_df['ths_code'] = table['thscode']
                 data_df_list.append(data_df)
+
+        # 若没有数据，返回空
+        if len(data_df_list) == 0:
+            return None
+
         ret_df = pd.concat(data_df_list)
         ret_df.index.rename('time', inplace=True)
         ret_df.reset_index(inplace=True)
@@ -295,7 +317,10 @@ class THSRealtimeQuotes(Resource):
                 # 错误处理
                 if error_code == -1010:
                     ths_login = ifind_login()
-                    if ths_login != 0 or ths_login != -201:
+                    if ths_login == 0 or ths_login == -201:
+                        logger.warning('尝试重新登陆成功，再次调用函数')
+                        continue
+                    else:
                         logger.error('尝试重新登陆失败')
 
                 msg = ret_data['errmsg']
@@ -309,6 +334,9 @@ class THSRealtimeQuotes(Resource):
         data_df_list = []
         for nth_table in range(table_count):
             table = tables[nth_table]
+            if 'time' not in table:
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, table.shape)
+                continue
             date_list = table['time']
             date_len = len(date_list)
             if date_len > 0:
@@ -316,6 +344,11 @@ class THSRealtimeQuotes(Resource):
                 data_df = pd.DataFrame(data, index=date_list)
                 data_df['ths_code'] = table['thscode']
                 data_df_list.append(data_df)
+
+        # 若没有数据，返回空
+        if len(data_df_list) == 0:
+            return None
+
         ret_df = pd.concat(data_df_list)
         ret_df.index.rename('time', inplace=True)
         ret_df.reset_index(inplace=True)
@@ -343,7 +376,10 @@ class THSHistoryQuotes(Resource):
                 # 错误处理
                 if error_code == -1010:
                     ths_login = ifind_login()
-                    if ths_login != 0 or ths_login != -201:
+                    if ths_login == 0 or ths_login == -201:
+                        logger.warning('尝试重新登陆成功，再次调用函数')
+                        continue
+                    else:
                         logger.error('尝试重新登陆失败')
 
                 msg = ret_data['errmsg']
@@ -357,6 +393,9 @@ class THSHistoryQuotes(Resource):
         data_df_list = []
         for nth_table in range(table_count):
             table = tables[nth_table]
+            if 'time' not in table:
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, table.shape)
+                continue
             date_list = table['time']
             date_len = len(date_list)
             if date_len > 0:
@@ -364,6 +403,11 @@ class THSHistoryQuotes(Resource):
                 data_df = pd.DataFrame(data, index=date_list)
                 data_df['ths_code'] = table['thscode']
                 data_df_list.append(data_df)
+
+        # 若没有数据，返回空
+        if len(data_df_list) == 0:
+            return None
+
         ret_df = pd.concat(data_df_list)
         ret_df.index.rename('time', inplace=True)
         ret_df.reset_index(inplace=True)
@@ -391,7 +435,10 @@ class THSSnapshot(Resource):
                 # 错误处理
                 if error_code == -1010:
                     ths_login = ifind_login()
-                    if ths_login != 0 or ths_login != -201:
+                    if ths_login == 0 or ths_login == -201:
+                        logger.warning('尝试重新登陆成功，再次调用函数')
+                        continue
+                    else:
                         logger.error('尝试重新登陆失败')
 
                 msg = ret_data['errmsg']
@@ -405,6 +452,9 @@ class THSSnapshot(Resource):
         data_df_list = []
         for nth_table in range(table_count):
             table = tables[nth_table]
+            if 'time' not in table:
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, table.shape)
+                continue
             date_list = table['time']
             date_len = len(date_list)
             if date_len > 0:
@@ -412,6 +462,11 @@ class THSSnapshot(Resource):
                 data_df = pd.DataFrame(data, index=date_list)
                 data_df['ths_code'] = table['thscode']
                 data_df_list.append(data_df)
+
+        # 若没有数据，返回空
+        if len(data_df_list) == 0:
+            return None
+
         ret_df = pd.concat(data_df_list)
         ret_df.index.rename('time', inplace=True)
         ret_df.reset_index(inplace=True)
@@ -439,7 +494,10 @@ class THSBasicData(Resource):
                 # 错误处理
                 if error_code == -1010:
                     ths_login = ifind_login()
-                    if ths_login != 0 or ths_login != -201:
+                    if ths_login == 0 or ths_login == -201:
+                        logger.warning('尝试重新登陆成功，再次调用函数')
+                        continue
+                    else:
                         logger.error('尝试重新登陆失败')
 
                 msg = ret_data['errmsg']
@@ -455,10 +513,18 @@ class THSBasicData(Resource):
         data_df_list = []
         for nth_table in range(table_count):
             table = tables[nth_table]
+            if 'table' not in table:
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, table.shape)
+                continue
             data = table['table']
             data_df = pd.DataFrame(data)
             data_df['ths_code'] = table['thscode']
             data_df_list.append(data_df)
+
+        # 若没有数据，返回空
+        if len(data_df_list) == 0:
+            return None
+
         ret_df = pd.concat(data_df_list).reset_index(drop=True)
         # print('ret_df\n', ret_df)
         ret_dic = ret_df.to_dict()
@@ -483,7 +549,10 @@ class THSDataPool(Resource):
             if error_code != 0:
                 if error_code == -1010:
                     ths_login = ifind_login()
-                    if ths_login != 0 or ths_login != -201:
+                    if ths_login == 0 or ths_login == -201:
+                        logger.warning('尝试重新登陆成功，再次调用函数')
+                        continue
+                    else:
                         logger.error('尝试重新登陆失败')
 
                 msg = ret_data['errmsg']
@@ -498,11 +567,19 @@ class THSDataPool(Resource):
         if table_count > 0:
             for nth_table in range(table_count):
                 table = tables[nth_table]
+                if 'table' not in table:
+                    logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, table.shape)
+                    continue
                 data = table['table']
                 data_df = pd.DataFrame(data)
                 if table['thscode'] != '':
                     data_df['ths_code'] = table['thscode']
                 data_df_list.append(data_df)
+
+        # 若没有数据，返回空
+        if len(data_df_list) == 0:
+            return None
+
         ret_df = pd.concat(data_df_list)
         # print('ret_df\n', ret_df)
         ret_dic = ret_df.to_dict()
@@ -564,7 +641,10 @@ class THSEDBQuery(Resource):
                 # 错误处理
                 if error_code == -1010:
                     ths_login = ifind_login()
-                    if ths_login != 0 or ths_login != -201:
+                    if ths_login == 0 or ths_login == -201:
+                        logger.warning('尝试重新登陆成功，再次调用函数')
+                        continue
+                    else:
                         logger.error('尝试重新登陆失败')
 
                 msg = ret_data['errmsg']
@@ -579,6 +659,9 @@ class THSEDBQuery(Resource):
         if table_count > 0:
             for nth_table in range(table_count):
                 table = tables[nth_table]
+                if 'id' not in table:
+                    logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, table.shape)
+                    continue
                 if len(table['id']) > 0:
                     temp = table['id']
                     table.pop('id')
@@ -588,6 +671,11 @@ class THSEDBQuery(Resource):
                 else:
                     data_df = pd.DataFrame(table)
                     data_df_list.append(data_df)
+
+        # 若没有数据，返回空
+        if len(data_df_list) == 0:
+            return None
+
         ret_df = pd.concat(data_df_list)
         # print('ret_df\n', ret_df)
         ret_dic = ret_df.to_dict()
@@ -613,7 +701,10 @@ class THSDateQuery(Resource):
                 # 错误处理
                 if error_code == -1010:
                     ths_login = ifind_login()
-                    if ths_login != 0 or ths_login != -201:
+                    if ths_login == 0 or ths_login == -201:
+                        logger.warning('尝试重新登陆成功，再次调用函数')
+                        continue
+                    else:
                         logger.error('尝试重新登陆失败')
 
                 msg = ret_data['errmsg']
@@ -625,6 +716,8 @@ class THSDateQuery(Resource):
         tables = ret_data['tables']
         table_count = len(tables)
         data_df_list = []
+
+        # 若没有数据，返回空
         if table_count == 0:
             return None
 
