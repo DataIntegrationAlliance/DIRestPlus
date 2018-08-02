@@ -10,11 +10,13 @@
 from direstplus import api
 from flask_restplus import Resource, reqparse
 import pandas as pd
+import numpy as np
 import logging
 from datetime import datetime, date
 from direstplus.exceptions import RequestError
 import iFinDPy as ifind
 from direstplus.config import config
+
 logger = logging.getLogger(__name__)
 STR_FORMAT_DATE = '%Y-%m-%d'
 STR_FORMAT_DATETIME_WIND = '%Y-%m-%d %H:%M:%S'  # 2017-03-06 00:00:00
@@ -152,6 +154,10 @@ def format_2_datetime_str(dt):
     dt_type = type(dt)
     if dt_type == str:
         return dt
+    elif dt_type == np.int64:
+        return np.asscalar(dt)
+    elif dt_type == np.float64:
+        return dt_type.item()
     elif dt_type == date:
         if dt > UN_AVAILABLE_DATE:
             return dt.strftime(STR_FORMAT_DATE)
@@ -517,6 +523,8 @@ class THSBasicData(Resource):
                 logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count)
                 continue
             data = table['table']
+
+            # 找到第一个符合格式的参数进行type判断
             data_df = pd.DataFrame(data)
             data_df['ths_code'] = table['thscode']
             data_df_list.append(data_df)
@@ -526,9 +534,15 @@ class THSBasicData(Resource):
             return None
 
         ret_df = pd.concat(data_df_list).reset_index(drop=True)
+        ret_df.index = [str(idx) for idx in ret_df.index]
         # print('ret_df\n', ret_df)
         ret_dic = ret_df.to_dict()
-        # print('ret_dic:\n', ret_dic)
+        for (key, item_check) in ret_dic.items():
+            if item_check is not None:
+                for (n, val) in item_check.items():
+                    if type(val) in (np.int64, np.float64):
+                        ret_dic[key][n] = format_2_datetime_str(val)
+        print('ret_dic:\n', ret_dic)
         return ret_dic
 
 
