@@ -148,7 +148,7 @@ def format_2_date_str(dt):
         return dt
 
 
-def format_2_datetime_str(dt):
+def format_2_str(dt):
     if dt is None:
         return None
     dt_type = type(dt)
@@ -538,11 +538,11 @@ class THSBasicData(Resource):
         ret_df.index = [str(idx) for idx in ret_df.index]
         # print('ret_df\n', ret_df)
         ret_dic = ret_df.to_dict()
-        for (key, item_check) in ret_dic.items():
+        for key, item_check in ret_dic.items():
             if item_check is not None:
-                for (n, val) in item_check.items():
+                for n, val in item_check.items():
                     if type(val) in (np.int64, np.float64):
-                        ret_dic[key][n] = format_2_datetime_str(val)
+                        ret_dic[key][n] = format_2_str(val)
         # print('ret_dic:\n', ret_dic)
         return ret_dic
 
