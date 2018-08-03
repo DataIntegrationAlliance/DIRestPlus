@@ -417,6 +417,7 @@ class THSHistoryQuotes(Resource):
         ret_df = pd.concat(data_df_list)
         ret_df.index.rename('time', inplace=True)
         ret_df.reset_index(inplace=True)
+        ret_df.index = [str(idx) for idx in ret_df.index]
         # print('ret_df\n', ret_df)
         ret_dic = ret_df.to_dict()
         # print('ret_dic:\n', ret_dic)
@@ -542,7 +543,7 @@ class THSBasicData(Resource):
                 for (n, val) in item_check.items():
                     if type(val) in (np.int64, np.float64):
                         ret_dic[key][n] = format_2_datetime_str(val)
-        print('ret_dic:\n', ret_dic)
+        # print('ret_dic:\n', ret_dic)
         return ret_dic
 
 
