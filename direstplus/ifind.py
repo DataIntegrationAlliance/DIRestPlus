@@ -157,7 +157,7 @@ def format_2_datetime_str(dt):
     elif dt_type == np.int64:
         return np.asscalar(dt)
     elif dt_type == np.float64:
-        return dt_type.item()
+        return dt.item()
     elif dt_type == date:
         if dt > UN_AVAILABLE_DATE:
             return dt.strftime(STR_FORMAT_DATE)
@@ -240,6 +240,7 @@ class THSDateSerial(Resource):
         ret_df = pd.concat(data_df_list)
         ret_df.index.rename('time', inplace=True)
         ret_df.reset_index(inplace=True)
+        ret_df.index = [str(idx) for idx in ret_df.index]
         # print('ret_df\n', ret_df)
         ret_dic = ret_df.to_dict()
         # print('ret_dic:\n', ret_dic)
@@ -420,7 +421,12 @@ class THSHistoryQuotes(Resource):
         ret_df.index = [str(idx) for idx in ret_df.index]
         # print('ret_df\n', ret_df)
         ret_dic = ret_df.to_dict()
-        # print('ret_dic:\n', ret_dic)
+        for (key, item_check) in ret_dic.items():
+            if item_check is not None:
+                for (n, val) in item_check.items():
+                    if type(val) in (np.int64, np.float64):
+                        ret_dic[key][n] = format_2_datetime_str(val)
+        print('ret_dic:\n', ret_dic)
         return ret_dic
 
 
@@ -543,7 +549,7 @@ class THSBasicData(Resource):
                 for (n, val) in item_check.items():
                     if type(val) in (np.int64, np.float64):
                         ret_dic[key][n] = format_2_datetime_str(val)
-        # print('ret_dic:\n', ret_dic)
+        print('ret_dic:\n', ret_dic)
         return ret_dic
 
 
