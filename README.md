@@ -19,3 +19,21 @@ thsLogin = THS_iFinDLogin("***","***")  # 0
 
 thsDataDataPool  = THS_DataPool('block','2016-11-27;001005260','date:Y,security_name:Y,thscode:Y')
 ```
+-----
+
+#### wind 环境配置
+```commandline
+python "d:\IDE\Wind\Wind.NET.Client\WindNET\bin\installWindPy.py" "d:\IDE\Wind\Wind.NET.Client\WindNET"
+```
+
+#### 测试接口文件安装是否成功
+```python
+from WindPy import w
+w.start()
+```
+输出内容：
+> Welcome to use Wind Quant API for Python (WindPy)!
+COPYRIGHT (C) 2017 WIND INFORMATION CO., LTD. ALL RIGHTS RESERVED.
+IN NO CIRCUMSTANCE SHALL WIND BE RESPONSIBLE FOR ANY DAMAGES OR LOSSES CAUSED BY USING WIND QUANT API FOR Python.
+.ErrorCode=0
+.Data=[OK!]
