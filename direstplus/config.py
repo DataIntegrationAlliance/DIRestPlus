@@ -15,8 +15,8 @@ from logging.config import dictConfig
 # os.getenv() enables configuration through OS environment variables
 class ConfigBase(object):
     # 同花顺账号密码 settings
-    THS_LOGIN_USER_NAME = 'fhtz070'
-    THS_LOGIN_PASSWORD = '541245'
+    THS_LOGIN_USER_NAME = '***'
+    THS_LOGIN_PASSWORD = '***'
     # log settings
     logging_config = dict(
         version=1,
@@ -44,7 +44,7 @@ class ConfigBase(object):
         },
 
         root={
-            'handlers': ['console_handler', 'file_handler'],
+            'handlers': ['console_handler'],  # , 'file_handler'
             'level': logging.DEBUG,
         }
     )
