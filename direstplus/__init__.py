@@ -51,10 +51,11 @@ def start_service():
         ths_login = ifind_login()
 
     if has_wind_api:
-        if WindPy.w.isconnected():
-            WindPy.w.start()
-            logger.info('Wind 成功登陆')
-        else:
+        try:
+            if not WindPy.w.isconnected():
+                WindPy.w.start()
+                logger.info('Wind 成功登陆')
+        except:
             logger.error("Wind 登录失败")
 
     try:
