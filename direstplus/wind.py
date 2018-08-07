@@ -169,11 +169,11 @@ class ReceiveWSET(Resource):
         # print('args:%s' % args)
         # table_name = args['table_name']
         # options = args['options']
-        ret_data = w.wset(**args)
+        if args['options'] == "":
+            args['options'] = None
         if not w.isconnected():
             w.start()
-        if ret_data['options'] == "":
-            ret_data['options'] = None
+        ret_data = w.wset(**args)
         error_code = ret_data.ErrorCode
         if error_code != 0:
             msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
@@ -223,11 +223,11 @@ class ReceiveWSD(Resource):
         # begin_time = args['begin_time']
         # end_time = args['end_time']
         # options = args['options']
-        ret_data = w.wsd(**args)
+        if args['options'] == "":
+            args['options'] = None
         if not w.isconnected():
             w.start()
-        if ret_data['options'] == "":
-            ret_data['options'] = None
+        ret_data = w.wsd(**args)
         error_code = ret_data.ErrorCode
         if error_code != 0:
             msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
@@ -285,11 +285,11 @@ class ReceiveWSI(Resource):
         # begin_time = args['begin_time']
         # end_time = args['end_time']
         # options = args['options']
-        ret_data = w.wsi(**args)
+        if args['options'] == "":
+            args['options'] = None
         if not w.isconnected():
             w.start()
-        if ret_data['options'] == "":
-            ret_data['options'] = None
+        ret_data = w.wsi(**args)
         error_code = ret_data.ErrorCode
         if error_code != 0:
             msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
@@ -338,11 +338,11 @@ class ReceiveWSS(Resource):
         # codes = args['codes']
         # fields = args['fields']
         # options = args['options']
-        ret_data = w.wss(**args)
+        if args['options'] == "":
+            args['options'] = None
         if not w.isconnected():
             w.start()
-        if ret_data['options'] == "":
-            ret_data['options'] = None
+        ret_data = w.wss(**args)
         error_code = ret_data.ErrorCode
         if error_code != 0:
             msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
@@ -381,11 +381,11 @@ class ReceiveTdaysoffset(Resource):
         # offset = int(args['offset'])
         # begin_time = args['begin_time']
         # options = args['options']
-        ret_data = w.tdaysoffset(**args)
+        if args['options'] == "":
+            args['options'] = None
         if not w.isconnected():
             w.start()
-        if ret_data['options'] == "":
-            ret_data['options'] = None
+        ret_data = w.tdaysoffset(**args)
         error_code = ret_data.ErrorCode
         if error_code != 0:
             msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
@@ -421,11 +421,11 @@ class ReceiveTdays(Resource):
         # begin_time = args['begin_time']
         # end_time = args['end_time']
         # options = args['options']
-        ret_data = w.tdays(**args)
+        if args['options'] == "":
+            args['options'] = None
         if not w.isconnected():
             w.start()
-        if ret_data['options'] == "":
-            ret_data['options'] = None
+        ret_data = w.tdays(**args)
         error_code = ret_data.ErrorCode
         if error_code != 0:
             msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
@@ -472,11 +472,11 @@ class ReceiveWSQ(Resource):
         # codes = args['codes']
         # fields = args['fields']
         # options = args['options']
-        ret_data = w.wsq(**args)
+        if args['options'] == "":
+            args['options'] = None
         if not w.isconnected():
             w.start()
-        if ret_data['options'] == "":
-            ret_data['options'] = None
+        ret_data = w.wsq(**args)
         error_code = ret_data.ErrorCode
         if error_code != 0:
             msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
@@ -517,11 +517,11 @@ class ReceiveWST(Resource):
         # begin_time = args['begin_time']
         # end_time = args['end_time']
         # options = args['options']
-        ret_data = w.wst(**args)
+        if args['options'] == "":
+            args['options'] = None
         if not w.isconnected():
             w.start()
-        if ret_data['options'] == "":
-            ret_data['options'] = None
+        ret_data = w.wst(**args)
         error_code = ret_data.ErrorCode
         if error_code != 0:
             msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
@@ -570,11 +570,11 @@ class ReceiveEDB(Resource):
         # begin_time = args['begin_time']
         # end_time = args['end_time']
         # options = args['options']
-        ret_data = w.edb(**args)
+        if args['options'] == "":
+            args['options'] = None
         if not w.isconnected():
             w.start()
-        if ret_data['options'] == "":
-            ret_data['options'] = None
+        ret_data = w.edb(**args)
         error_code = ret_data.ErrorCode
         if error_code != 0:
             msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
