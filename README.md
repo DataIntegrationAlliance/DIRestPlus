@@ -1,9 +1,25 @@
 # DIRestPlus [![Build Status](https://travis-ci.org/DataIntegrationAlliance/DIRestPlus.svg?branch=master)](https://travis-ci.org/DataIntegrationAlliance/DIRestPlus)
 Data Integration RESTPlus，通过Flask-RESTPlus 构建接口框架，将Wind、iFinD、Choice等进行统一封装
 
-### 外部环境依赖及安装配置
+## 启动（两步）
+1. 编写一份启动脚本
+run.py 文件
+```python
+from direstplus import start_service
+start_service()
+```
+2. 启动脚本
+```commandline
+python run.py
+```
+如果是Linux系统，使用python3
+```bash
+python3 run.py
+```
 
-#### ifind 环境配置
+## 外部环境依赖及安装配置
+
+### ifind 环境配置
 ```commandline
 python "d:\IDE\iFinD\bin\x64\installiFinDPy.py" "D:\IDE\iFinD\bin"
 ```
@@ -21,7 +37,7 @@ thsDataDataPool  = THS_DataPool('block','2016-11-27;001005260','date:Y,security_
 ```
 -----
 
-#### wind 环境配置
+### wind 环境配置
 ```commandline
 python "d:\IDE\Wind\Wind.NET.Client\WindNET\bin\installWindPy.py" "d:\IDE\Wind\Wind.NET.Client\WindNET"
 ```
