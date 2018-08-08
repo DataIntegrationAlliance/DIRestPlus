@@ -15,8 +15,11 @@ from logging.config import dictConfig
 # os.getenv() enables configuration through OS environment variables
 class ConfigBase(object):
     # 同花顺账号密码 settings
+    ENABLE_IFIND = True
     THS_LOGIN_USER_NAME = '***'
     THS_LOGIN_PASSWORD = '***'
+    # wind 接口
+    ENABLE_WIND = True
     # log settings
     logging_config = dict(
         version=1,
