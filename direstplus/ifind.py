@@ -7,6 +7,8 @@
 @contact : mmmaaaggg@163.com
 @desc    :
 """
+from json import JSONDecodeError
+import time
 from direstplus import api
 from flask_restplus import Resource, reqparse
 import pandas as pd
@@ -198,8 +200,16 @@ class THSDateSerial(Resource):
         # data_dic = request.json
         args = data_serial_parser.parse_args()
         logger.info('/THS_DateSerial/ args:%s' % args)
+        ret_data = None
         for nth in range(2):
-            ret_data = ifind.THS_DateSerial(**args)
+            try:
+                ret_data = ifind.THS_DateSerial(**args)
+            except JSONDecodeError:
+                # 目前原因不明，但是调用接口时会随机性的会抛出这类错误
+                logger.exception('/THS_DateSerial/ args:%s' % args)
+                time.sleep(0.1)
+                continue
+
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
@@ -217,6 +227,8 @@ class THSDateSerial(Resource):
             else:
                 break
 
+        if ret_data is None:
+            return None
         tables = ret_data['tables']
         table_count = len(tables)
         data_df_list = []
@@ -258,8 +270,16 @@ class THSHighFrequenceSequence(Resource):
         # data_dic = request.json
         args = high_frequence_sequence_parser.parse_args()
         logger.info('/THS_HighFrequenceSequence/ args:%s' % args)
+        ret_data = None
         for nth in range(2):
-            ret_data = ifind.THS_HighFrequenceSequence(**args)
+            try:
+                ret_data = ifind.THS_HighFrequenceSequence(**args)
+            except JSONDecodeError:
+                # 目前原因不明，但是调用接口时会随机性的会抛出这类错误
+                logger.exception('/THS_HighFrequenceSequence/ args:%s' % args)
+                time.sleep(0.1)
+                continue
+
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
@@ -277,6 +297,8 @@ class THSHighFrequenceSequence(Resource):
             else:
                 break
 
+        if ret_data is None:
+            return None
         tables = ret_data['tables']
         table_count = len(tables)
         data_df_list = []
@@ -317,8 +339,16 @@ class THSRealtimeQuotes(Resource):
         # data_dic = request.json
         args = realtime_quotes_parser.parse_args()
         logger.info('/THS_RealtimeQuotes/ args:%s' % args)
+        ret_data = None
         for nth in range(2):
-            ret_data = ifind.THS_RealtimeQuotes(**args)
+            try:
+                ret_data = ifind.THS_RealtimeQuotes(**args)
+            except JSONDecodeError:
+                # 目前原因不明，但是调用接口时会随机性的会抛出这类错误
+                logger.exception('/THS_RealtimeQuotes/ args:%s' % args)
+                time.sleep(0.1)
+                continue
+
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
@@ -336,6 +366,8 @@ class THSRealtimeQuotes(Resource):
             else:
                 break
 
+        if ret_data is None:
+            return None
         tables = ret_data['tables']
         table_count = len(tables)
         data_df_list = []
@@ -376,8 +408,16 @@ class THSHistoryQuotes(Resource):
         # data_dic = request.json
         args = history_quotes_parser.parse_args()
         logger.info('/THS_HistoryQuotes/ args:%s' % args)
+        ret_data = None
         for nth in range(2):
-            ret_data = ifind.THS_HistoryQuotes(**args)
+            try:
+                ret_data = ifind.THS_HistoryQuotes(**args)
+            except JSONDecodeError:
+                # 目前原因不明，但是调用接口时会随机性的会抛出这类错误
+                logger.exception('/THS_HistoryQuotes/ args:%s' % args)
+                time.sleep(0.1)
+                continue
+
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
@@ -395,6 +435,8 @@ class THSHistoryQuotes(Resource):
             else:
                 break
 
+        if ret_data is None:
+            return None
         tables = ret_data['tables']
         table_count = len(tables)
         data_df_list = []
@@ -441,8 +483,16 @@ class THSSnapshot(Resource):
         # data_dic = request.json
         args = snap_shot_parser.parse_args()
         logger.info('/THS_Snapshot/ args:%s' % args)
+        ret_data = None
         for nth in range(2):
-            ret_data = ifind.THS_Snapshot(**args)
+            try:
+                ret_data = ifind.THS_Snapshot(**args)
+            except JSONDecodeError:
+                # 目前原因不明，但是调用接口时会随机性的会抛出这类错误
+                logger.exception('/THS_Snapshot/ args:%s' % args)
+                time.sleep(0.1)
+                continue
+
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
@@ -460,6 +510,8 @@ class THSSnapshot(Resource):
             else:
                 break
 
+        if ret_data is None:
+            return None
         tables = ret_data['tables']
         table_count = len(tables)
         data_df_list = []
@@ -500,8 +552,16 @@ class THSBasicData(Resource):
         # data_dic = request.json
         args = basic_data_parser.parse_args()
         logger.info('/THS_BasicData/ args:%s' % args)
+        ret_data = None
         for nth in range(2):
-            ret_data = ifind.THS_BasicData(**args)
+            try:
+                ret_data = ifind.THS_BasicData(**args)
+            except JSONDecodeError:
+                # 目前原因不明，但是调用接口时会随机性的会抛出这类错误
+                logger.exception('/THS_BasicData/ args:%s' % args)
+                time.sleep(0.1)
+                continue
+
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
@@ -519,6 +579,8 @@ class THSBasicData(Resource):
             else:
                 break
 
+        if ret_data is None:
+            return None
         tables = ret_data['tables']
         table_count = len(tables)
         if table_count == 0:
@@ -564,8 +626,16 @@ class THSDataPool(Resource):
         # data_dic = request.json
         args = data_pool_parser.parse_args()
         logger.info('/THS_DataPool/ args:%s' % args)
+        ret_data = None
         for nth in range(2):
-            ret_data = ifind.THS_DataPool(**args)
+            try:
+                ret_data = ifind.THS_DataPool(**args)
+            except JSONDecodeError:
+                # 目前原因不明，但是调用接口时会随机性的会抛出这类错误
+                logger.exception('/THS_DataPool/ args:%s' % args)
+                time.sleep(0.1)
+                continue
+
             error_code = ret_data['errorcode']
             if error_code != 0:
                 if error_code == -1010:
@@ -582,6 +652,8 @@ class THSDataPool(Resource):
             else:
                 break
 
+        if ret_data is None:
+            return None
         tables = ret_data['tables']
         table_count = len(tables)
         data_df_list = []
@@ -656,8 +728,16 @@ class THSEDBQuery(Resource):
         # data_dic = request.json
         args = edb_query_parser.parse_args()
         logger.info('/THS_EDBQuery/ args:%s' % args)
+        ret_data = None
         for nth in range(2):
-            ret_data = ifind.THS_EDBQuery(**args)
+            try:
+                ret_data = ifind.THS_EDBQuery(**args)
+            except JSONDecodeError:
+                # 目前原因不明，但是调用接口时会随机性的会抛出这类错误
+                logger.exception('/THS_EDBQuery/ args:%s' % args)
+                time.sleep(0.1)
+                continue
+
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
@@ -675,6 +755,8 @@ class THSEDBQuery(Resource):
             else:
                 break
 
+        if ret_data is None:
+            return None
         tables = ret_data['tables']
         table_count = len(tables)
         data_df_list = []
@@ -716,8 +798,16 @@ class THSDateQuery(Resource):
         # data_dic = request.json
         args = date_query_parser.parse_args()
         logger.info('/THS_DateQuery/ args:%s' % args)
+        ret_data = None
         for nth in range(2):
-            ret_data = ifind.THS_DateQuery(**args)
+            try:
+                ret_data = ifind.THS_DateQuery(**args)
+            except JSONDecodeError:
+                # 目前原因不明，但是调用接口时会随机性的会抛出这类错误
+                logger.exception('/THS_DateQuery/ args:%s' % args)
+                time.sleep(0.1)
+                continue
+
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
@@ -735,6 +825,8 @@ class THSDateQuery(Resource):
             else:
                 break
 
+        if ret_data is None:
+            return None
         tables = ret_data['tables']
         table_count = len(tables)
         data_df_list = []
