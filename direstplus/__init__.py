@@ -60,7 +60,7 @@ def start_service():
 
     try:
         from direstplus import app
-        app.run(host="0.0.0.0", debug=True)
+        app.run(host="0.0.0.0", debug=True, use_reloader=False)
     finally:
         if config.ENABLE_IFIND:
             ifind_logout()
