@@ -300,6 +300,7 @@ class THSHighFrequenceSequence(Resource):
         ret_df = pd.concat(data_df_list)
         ret_df.index.rename('time', inplace=True)
         ret_df.reset_index(inplace=True)
+        ret_df.index = [str(idx) for idx in ret_df.index]
         # print('ret_df\n', ret_df)
         ret_dic = ret_df.to_dict()
         # print('ret_dic:\n', ret_dic)
@@ -360,6 +361,7 @@ class THSRealtimeQuotes(Resource):
         ret_df.index.rename('time', inplace=True)
         ret_df.reset_index(inplace=True)
         # print('ret_df\n', ret_df)
+        ret_df.index = [str(idx) for idx in ret_df.index]
         ret_dic = ret_df.to_dict()
         # print('ret_dic:\n', ret_dic)
         return ret_dic
@@ -484,6 +486,7 @@ class THSSnapshot(Resource):
         ret_df.index.rename('time', inplace=True)
         ret_df.reset_index(inplace=True)
         # print('ret_df\n', ret_df)
+        ret_df.index = [str(idx) for idx in ret_df.index]
         ret_dic = ret_df.to_dict()
         # print('ret_dic:\n', ret_dic)
         return ret_dic
@@ -746,7 +749,9 @@ class THSDateQuery(Resource):
         data_df = pd.DataFrame(tables)
         data_df_list.append(data_df)
         ret_df = pd.concat(data_df_list)
+        ret_df.index = [str(idx) for idx in ret_df.index]
         # print('ret_df\n', ret_df)
         ret_dic = ret_df.to_dict()
         # print('ret_dic:\n', ret_dic)
+
         return ret_dic
