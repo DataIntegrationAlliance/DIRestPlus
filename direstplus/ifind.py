@@ -235,7 +235,7 @@ class THSDateSerial(Resource):
         for nth_table in range(table_count):
             table = tables[nth_table]
             if 'time' not in table:
-                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count)
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, args)
                 continue
             date_list = table['time']
             date_len = len(date_list)
@@ -305,7 +305,7 @@ class THSHighFrequenceSequence(Resource):
         for nth_table in range(table_count):
             table = tables[nth_table]
             if 'time' not in table:
-                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count)
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, args)
                 continue
             date_list = table['time']
             date_len = len(date_list)
@@ -375,7 +375,7 @@ class THSRealtimeQuotes(Resource):
         for nth_table in range(table_count):
             table = tables[nth_table]
             if 'time' not in table:
-                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count)
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, args)
                 continue
             date_list = table['time']
             date_len = len(date_list)
@@ -445,7 +445,7 @@ class THSHistoryQuotes(Resource):
         for nth_table in range(table_count):
             table = tables[nth_table]
             if 'time' not in table:
-                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count)
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, args)
                 continue
             date_list = table['time']
             date_len = len(date_list)
@@ -520,7 +520,7 @@ class THSSnapshot(Resource):
         for nth_table in range(table_count):
             table = tables[nth_table]
             if 'time' not in table:
-                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count)
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, args)
                 continue
             date_list = table['time']
             date_len = len(date_list)
@@ -592,7 +592,7 @@ class THSBasicData(Resource):
         for nth_table in range(table_count):
             table = tables[nth_table]
             if 'table' not in table:
-                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count)
+                logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, args)
                 continue
             data = table['table']
 
@@ -664,7 +664,7 @@ class THSDataPool(Resource):
             for nth_table in range(table_count):
                 table = tables[nth_table]
                 if 'table' not in table:
-                    logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count)
+                    logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, args)
                     continue
                 data = table['table']
                 data_df = pd.DataFrame(data)
@@ -767,7 +767,7 @@ class THSEDBQuery(Resource):
             for nth_table in range(table_count):
                 table = tables[nth_table]
                 if 'id' not in table:
-                    logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count)
+                    logger.error('%d/%d) 当前结果没有 time 列，将被跳过 %s', nth_table, table_count, args)
                     continue
                 if len(table['id']) > 0:
                     temp = table['id']
