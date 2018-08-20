@@ -213,7 +213,7 @@ class THSDateSerial(Resource):
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
-                if error_code == -1010:
+                if error_code in (-1010, -1020):
                     ths_login = ifind_login()
                     if ths_login == 0 or ths_login == -201:
                         logger.warning('尝试重新登陆成功，再次调用函数')
@@ -283,7 +283,7 @@ class THSHighFrequenceSequence(Resource):
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
-                if error_code == -1010:
+                if error_code in (-1010, -1020):
                     ths_login = ifind_login()
                     if ths_login == 0 or ths_login == -201:
                         logger.warning('尝试重新登陆成功，再次调用函数')
@@ -353,7 +353,7 @@ class THSRealtimeQuotes(Resource):
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
-                if error_code == -1010:
+                if error_code in (-1010, -1020):
                     ths_login = ifind_login()
                     if ths_login == 0 or ths_login == -201:
                         logger.warning('尝试重新登陆成功，再次调用函数')
@@ -423,7 +423,7 @@ class THSHistoryQuotes(Resource):
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
-                if error_code == -1010:
+                if error_code in (-1010, -1020):
                     ths_login = ifind_login()
                     if ths_login == 0 or ths_login == -201:
                         logger.warning('尝试重新登陆成功，再次调用函数')
@@ -498,7 +498,7 @@ class THSSnapshot(Resource):
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
-                if error_code == -1010:
+                if error_code in (-1010, -1020):
                     ths_login = ifind_login()
                     if ths_login == 0 or ths_login == -201:
                         logger.warning('尝试重新登陆成功，再次调用函数')
@@ -568,7 +568,7 @@ class THSBasicData(Resource):
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
-                if error_code == -1010:
+                if error_code in (-1010, -1020):
                     ths_login = ifind_login()
                     if ths_login == 0 or ths_login == -201:
                         logger.warning('尝试重新登陆成功，再次调用函数')
@@ -641,7 +641,7 @@ class THSDataPool(Resource):
 
             error_code = ret_data['errorcode']
             if error_code != 0:
-                if error_code == -1010:
+                if error_code in (-1010, -1020):
                     ths_login = ifind_login()
                     if ths_login == 0 or ths_login == -201:
                         logger.warning('尝试重新登陆成功，再次调用函数')
@@ -744,7 +744,7 @@ class THSEDBQuery(Resource):
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
-                if error_code == -1010:
+                if error_code in (-1010, -1020):
                     ths_login = ifind_login()
                     if ths_login == 0 or ths_login == -201:
                         logger.warning('尝试重新登陆成功，再次调用函数')
@@ -814,7 +814,7 @@ class THSDateQuery(Resource):
             error_code = ret_data['errorcode']
             if error_code != 0:
                 # 错误处理
-                if error_code == -1010:
+                if error_code in (-1010, -1020):
                     ths_login = ifind_login()
                     if ths_login == 0 or ths_login == -201:
                         logger.warning('尝试重新登陆成功，再次调用函数')
