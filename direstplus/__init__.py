@@ -11,6 +11,9 @@ from flask import Flask
 from flask_restplus import Api
 import logging
 from datetime import datetime
+from flask_restplus._http import HTTPStatus
+from werkzeug.exceptions import BadRequest
+from direstplus.exceptions import RequestError
 from direstplus.config import config
 
 logger = logging.getLogger(__name__)
@@ -24,6 +27,27 @@ api = Api(app,
           version='0.0.1',
           description='Wind、iFinD、Choice 接口封装API',
           )
+
+
+@api.errorhandler(Exception)
+def login_error_handler(error: Exception):
+    """仅作为一个异常处理的例子"""
+    # logger.error('error on login| %s', error.description)
+    return {'status': 'error',
+            'message': error.args[0],
+            'error_name': error.__class__.__name__,
+            }, HTTPStatus.BAD_REQUEST
+
+
+@api.errorhandler(RequestError)
+def login_error_handler(error: RequestError):
+    # logger.error('error on login| %s', error.description)
+    return {'status': 'error',
+            'message': error.description,
+            'error_name': error.__class__.__name__,
+            'errcode': error.errcode,
+            }, error.code
+
 
 # 加载 iFinD 接口
 if config.ENABLE_IFIND:
