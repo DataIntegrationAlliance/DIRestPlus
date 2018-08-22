@@ -29,16 +29,6 @@ api = Api(app,
           )
 
 
-@api.errorhandler(Exception)
-def login_error_handler(error: Exception):
-    """仅作为一个异常处理的例子"""
-    # logger.error('error on login| %s', error.description)
-    return {'status': 'error',
-            'message': error.args[0],
-            'error_name': error.__class__.__name__,
-            }, HTTPStatus.BAD_REQUEST
-
-
 @api.errorhandler(RequestError)
 def login_error_handler(error: RequestError):
     # logger.error('error on login| %s', error.description)
@@ -47,6 +37,28 @@ def login_error_handler(error: RequestError):
             'error_name': error.__class__.__name__,
             'error_code': error.error_code,
             }, error.code
+
+
+@api.errorhandler(Exception)
+def login_error_handler(error: Exception):
+    """仅作为一个异常处理的例子"""
+    # logger.error('error on login| %s', error.description)
+    if isinstance(error, RequestError):
+        return {'status': 'error',
+                'message': error.description,
+                'error_name': error.__class__.__name__,
+                'error_code': error.error_code,
+                }, error.code
+    elif isinstance(error, BadRequest):
+        return {'status': 'error',
+                'message': error.description,
+                'error_name': error.__class__.__name__,
+                }, error.code
+    else:
+        return {'status': 'error',
+                'message': error.args[0],
+                'error_name': error.__class__.__name__,
+                }, HTTPStatus.BAD_REQUEST
 
 
 # 加载 iFinD 接口
