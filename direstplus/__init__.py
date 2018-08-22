@@ -45,7 +45,7 @@ def login_error_handler(error: RequestError):
     return {'status': 'error',
             'message': error.description,
             'error_name': error.__class__.__name__,
-            'errcode': error.errcode,
+            'error_code': error.error_code,
             }, error.code
 
 

@@ -14,4 +14,4 @@ class RequestError(BadRequest):
 
     def __init__(self, description=None, response=None, error_code=None):
         super().__init__(description, response)
-        self.errcode = error_code
+        self.error_code = error_code
