@@ -115,6 +115,7 @@ receive_edb_parser = reqparse.RequestParser().add_argument(
     'options', type=str, help="可选参数"
 )
 
+
 def format_2_date_str(dt):
     if dt is None:
         return None
@@ -173,24 +174,38 @@ class ReceiveWSET(Resource):
             args['options'] = None
         if not w.isconnected():
             w.start()
-        ret_data = w.wset(**args)
-        error_code = ret_data.ErrorCode
-        if error_code != 0:
-            msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
-            logger.error('wset(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
+        ret_data = None
+        for nth in range(2):
+            ret_data = w.wset(**args)
+            error_code = ret_data.ErrorCode
+            if error_code != 0:
+                if nth == 0 and error_code == -40521010:
+                    w.start()
+                    logger.warning('尝试重新登陆成功，再次调用函数')
+                    continue
 
+                msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
+                logger.error('wset(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
+        else:
+            if ret_data is None:
+                msg = 'wst(%s) ret_data is None' % args
+                logger.error(msg)
+                raise RequestError(msg, None, 0)
         data_count = len(ret_data.Data)
         # if data_count > 0:
-            # print('ret_data.Fields\n', ret_data.Fields)
-            # ret_data.Data[0] = [format_2_date_str(dt) for dt in ret_data.Data[0]]
-            # print('ret_data.Data\n', ret_data.Data)
+        # print('ret_data.Fields\n', ret_data.Fields)
+        # ret_data.Data[0] = [format_2_date_str(dt) for dt in ret_data.Data[0]]
+        # print('ret_data.Data\n', ret_data.Data)
 
         for n_data in range(data_count):
             data = ret_data.Data[n_data]
             data_len2 = len(data)
             if data_len2 > 0:
                 # 取出第一个部位None的数据
+                item_check = None
                 for item_check in data:
                     if item_check is not None:
                         break
@@ -212,7 +227,8 @@ class ReceiveWSD(Resource):
     @rec.expect(receive_wsd_parser)
     def post(self):
         """
-        json str:{"codes": "603555.SH", "fields": "close,pct_chg", "begin_time": "2017-01-04", "end_time": "2017-02-28", "options": "PriceAdj=F"}
+        json str:{"codes": "603555.SH", "fields": "close,pct_chg",
+            "begin_time": "2017-01-04", "end_time": "2017-02-28", "options": "PriceAdj=F"}
         :return: 返回万得返回数据dict
         """
         args = receive_wsd_parser.parse_args()
@@ -227,16 +243,26 @@ class ReceiveWSD(Resource):
             args['options'] = None
         if not w.isconnected():
             w.start()
-        ret_data = w.wsd(**args)
-        error_code = ret_data.ErrorCode
-        if error_code != 0:
-            msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
-            logger.error('wsd(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
-        # if ret_data.ErrorCode != 0:
-        #     logger.error('wsd("%s", "%s", "%s", "%s", "%s") ErrorCode=%d' % (
-        #         codes, fields, begin_time, end_time, options, ret_data.ErrorCode))
-        #     return {'error_code': ret_data.ErrorCode}, 404
+        ret_data = None
+        for nth in range(2):
+            ret_data = w.wsd(**args)
+            error_code = ret_data.ErrorCode
+            if error_code != 0:
+                if nth == 0 and error_code == -40521010:
+                    w.start()
+                    logger.warning('尝试重新登陆成功，再次调用函数')
+                    continue
+
+                msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
+                logger.error('wsd(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
+        else:
+            if ret_data is None:
+                msg = 'wst(%s) ret_data is None' % args
+                logger.error(msg)
+                raise RequestError(msg, None, 0)
         # 将 Data数据中所有 datetime date 类型的数据转换为 string
         data_len = len(ret_data.Data)
 
@@ -245,6 +271,7 @@ class ReceiveWSD(Resource):
             data_len2 = len(data)
             if data_len2 > 0:
                 # 取出第一个部位None的数据
+                item_check = None
                 for item_check in data:
                     if item_check is not None:
                         break
@@ -274,7 +301,8 @@ class ReceiveWSI(Resource):
     @rec.expect(receive_wsi_parser)
     def post(self):
         """
-        json str:{"codes": "RU1801.SHF", "fields": "open,high,low,close,volume,amt,oi", "begin_time": "2017-12-11 09:00:00", "end_time": "2017-12-11 10:27:41", "options": ""}
+        json str:{"codes": "RU1801.SHF", "fields": "open,high,low,close,volume,amt,oi",
+            "begin_time": "2017-12-11 09:00:00", "end_time": "2017-12-11 10:27:41", "options": ""}
         :return: 返回万得返回数据dict
         """
         args = receive_wsi_parser.parse_args()
@@ -289,17 +317,27 @@ class ReceiveWSI(Resource):
             args['options'] = None
         if not w.isconnected():
             w.start()
-        ret_data = w.wsi(**args)
-        error_code = ret_data.ErrorCode
-        if error_code != 0:
-            msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
-            logger.error('wsi(%s) ErrorCode=%d %s' % (
-                args, error_code, msg))
-            raise RequestError(msg, None, error_code)
-        # if ret_data.ErrorCode != 0:
-        #     logger.error('wsd("%s", "%s", "%s", "%s", "%s") ErrorCode=%d' % (
-        #         codes, fields, begin_time, end_time, options, ret_data.ErrorCode))
-        #     return {'error_code': ret_data.ErrorCode}, 404
+        ret_data = None
+        for nth in range(2):
+            ret_data = w.wsi(**args)
+            error_code = ret_data.ErrorCode
+            if error_code != 0:
+                if nth == 0 and error_code == -40521010:
+                    w.start()
+                    logger.warning('尝试重新登陆成功，再次调用函数')
+                    continue
+
+                msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
+                logger.error('wsi(%s) ErrorCode=%d %s' % (
+                    args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
+        else:
+            if ret_data is None:
+                msg = 'wst(%s) ret_data is None' % args
+                logger.error(msg)
+                raise RequestError(msg, None, 0)
         # 将 Data数据中所有 datetime date 类型的数据转换为 string
         data_len = len(ret_data.Data)
 
@@ -308,6 +346,7 @@ class ReceiveWSI(Resource):
             data_len2 = len(data)
             if data_len2 > 0:
                 # 取出第一个部位None的数据
+                item_check = None
                 for item_check in data:
                     if item_check is not None:
                         break
@@ -330,7 +369,8 @@ class ReceiveWSS(Resource):
     @rec.expect(receive_wss_parser)
     def post(self):
         """
-        json str:{"codes": "XT1522613.XT", "fields": "fund_setupdate,fund_maturitydate,fund_mgrcomp,fund_existingyear,fund_ptmyear,fund_type,fund_fundmanager", "options": ""}
+        json str:{"codes": "XT1522613.XT",
+            "fields": "fund_setupdate,fund_maturitydate,fund_mgrcomp,fund_existingyear,fund_fundmanager", "options": ""}
         :return: 返回万得返回数据dict
         """
         args = receive_wss_parser.parse_args()
@@ -342,12 +382,26 @@ class ReceiveWSS(Resource):
             args['options'] = None
         if not w.isconnected():
             w.start()
-        ret_data = w.wss(**args)
-        error_code = ret_data.ErrorCode
-        if error_code != 0:
-            msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
-            logger.error('wss(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
+        ret_data = None
+        for nth in range(2):
+            ret_data = w.wss(**args)
+            error_code = ret_data.ErrorCode
+            if error_code != 0:
+                if nth == 0 and error_code == -40521010:
+                    w.start()
+                    logger.warning('尝试重新登陆成功，再次调用函数')
+                    continue
+
+                msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
+                logger.error('wss(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
+        else:
+            if ret_data is None:
+                msg = 'wst(%s) ret_data is None' % args
+                logger.error(msg)
+                raise RequestError(msg, None, 0)
         # 将 Data数据中所有 datetime date 类型的数据转换为 string
         data_len = len(ret_data.Data)
         logger.debug('ret_data.Data len:%d', data_len)
@@ -385,17 +439,27 @@ class ReceiveTdaysoffset(Resource):
             args['options'] = None
         if not w.isconnected():
             w.start()
-        ret_data = w.tdaysoffset(**args)
-        error_code = ret_data.ErrorCode
-        if error_code != 0:
-            msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
-            logger.error(
-                'tdaysoffset("%s") ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
-        # if ret_data.ErrorCode != 0:
-        #     logger.error(
-        #         'tdaysoffset("%s", "%s", "%s") ErrorCode=%d' % (offset, begin_time, options, ret_data.ErrorCode))
-        #     return {'error_code': ret_data.ErrorCode}, 404
+        ret_data = None
+        for nth in range(2):
+            ret_data = w.tdaysoffset(**args)
+            error_code = ret_data.ErrorCode
+            if error_code != 0:
+                if nth == 0 and error_code == -40521010:
+                    w.start()
+                    logger.warning('尝试重新登陆成功，再次调用函数')
+                    continue
+
+                msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
+                logger.error(
+                    'tdaysoffset("%s") ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
+        else:
+            if ret_data is None:
+                msg = 'wst(%s) ret_data is None' % args
+                logger.error(msg)
+                raise RequestError(msg, None, 0)
         # 将 Data数据中所有 datetime date 类型的数据转换为 string
         if len(ret_data.Data) > 0 and len(ret_data.Data[0]) > 0:
             date_str = format_2_date_str(ret_data.Data[0][0])
@@ -425,24 +489,26 @@ class ReceiveTdays(Resource):
             args['options'] = None
         if not w.isconnected():
             w.start()
-        ret_data = w.tdays(**args)
-        error_code = ret_data.ErrorCode
-        if error_code != 0:
-            msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
-            logger.error('tdays(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            if ret_data.ErrorCode == 40521010:
-                w.close()
-                w.start()
-                logger.warning('网络连接超时，端口重新启动')
+        ret_data = None
+        for nth in range(2):
+            ret_data = w.tdays(**args)
+            error_code = ret_data.ErrorCode
+            if error_code != 0:
+                if nth == 0 and error_code == -40521010:
+                    w.start()
+                    logger.warning('尝试重新登陆成功，再次调用函数')
+                    continue
+
+                msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
+                logger.error('tdays(%s) ErrorCode=%d %s' % (args, error_code, msg))
                 raise RequestError(msg, None, error_code)
-        # if ret_data.ErrorCode != 0:
-        #     logger.error(
-        #         'tdays("%s", "%s", "%s") ErrorCode=%d' % (begin_time, end_time, options, ret_data.ErrorCode))
-        #     if ret_data.ErrorCode == 40521010:
-        #         w.close()
-        #         w.start()
-        #         logger.warning('网络连接超时，端口重新启动')
-        #     return {'error_code': ret_data.ErrorCode}, 404
+            else:
+                break
+        else:
+            if ret_data is None:
+                msg = 'wst(%s) ret_data is None' % args
+                logger.error(msg)
+                raise RequestError(msg, None, 0)
         # 将 Data数据中所有 datetime date 类型的数据转换为 string
         if len(ret_data.Data) > 0 and len(ret_data.Data[0]) > 0:
             # date_str = format_datetime_to_str(ret_data.Data[0][0])
@@ -476,12 +542,26 @@ class ReceiveWSQ(Resource):
             args['options'] = None
         if not w.isconnected():
             w.start()
-        ret_data = w.wsq(**args)
-        error_code = ret_data.ErrorCode
-        if error_code != 0:
-            msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
-            logger.error('wsq(%s) ErrorCode=%d %s' % args)
-            raise RequestError(msg, None, error_code)
+        ret_data = None
+        for nth in range(2):
+            ret_data = w.wsq(**args)
+            error_code = ret_data.ErrorCode
+            if error_code != 0:
+                if nth == 0 and error_code == -40521010:
+                    w.start()
+                    logger.warning('尝试重新登陆成功，再次调用函数')
+                    continue
+
+                msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
+                logger.error('wsq(%s) ErrorCode=%d %s' % args)
+                raise RequestError(msg, None, error_code)
+            else:
+                break
+        else:
+            if ret_data is None:
+                msg = 'wst(%s) ret_data is None' % args
+                logger.error(msg)
+                raise RequestError(msg, None, 0)
         # 将 Data数据中所有 datetime date 类型的数据转换为 string
         data_len = len(ret_data.Data)
         logger.debug('ret_data.Data len:%d', data_len)
@@ -507,7 +587,8 @@ class ReceiveWST(Resource):
     @rec.expect(receive_wst_parser)
     def post(self):
         """
-        json str:{"codes": "600008.SH, "fields": "ask1,bid1,asize1,bsize1,volume,amt,pre_close,open,high,low,last", "begin_time": "2017-01-04", "end_time": "2017-02-28", "options": ""}
+        json str:{"codes": "600008.SH, "fields": "ask1,bid1,asize1,bsize1,volume,amt,pre_close,open,high,low,last",
+            "begin_time": "2017-01-04", "end_time": "2017-02-28", "options": ""}
         :return: 返回万得返回数据dict
         """
         args = receive_wst_parser.parse_args()
@@ -521,16 +602,26 @@ class ReceiveWST(Resource):
             args['options'] = None
         if not w.isconnected():
             w.start()
-        ret_data = w.wst(**args)
-        error_code = ret_data.ErrorCode
-        if error_code != 0:
-            msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
-            logger.error('wst(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
-        # if ret_data.ErrorCode != 0:
-        #     logger.error('wsd("%s", "%s", "%s", "%s", "%s") ErrorCode=%d' % (
-        #         codes, fields, begin_time, end_time, options, ret_data.ErrorCode))
-        #     return {'error_code': ret_data.ErrorCode}, 404
+        ret_data = None
+        for nth in range(2):
+            ret_data = w.wst(**args)
+            error_code = ret_data.ErrorCode
+            if error_code != 0:
+                if nth == 0 and error_code == -40521010:
+                    w.start()
+                    logger.warning('尝试重新登陆成功，再次调用函数')
+                    continue
+
+                msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
+                logger.error('wst(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
+        else:
+            if ret_data is None:
+                msg = 'wst(%s) ret_data is None' % args
+                logger.error(msg)
+                raise RequestError(msg, None, 0)
         # 将 Data数据中所有 datetime date 类型的数据转换为 string
         data_len = len(ret_data.Data)
 
@@ -539,6 +630,7 @@ class ReceiveWST(Resource):
             data_len2 = len(data)
             if data_len2 > 0:
                 # 取出第一个部位None的数据
+                item_check = None
                 for item_check in data:
                     if item_check is not None:
                         break
@@ -561,12 +653,13 @@ class ReceiveEDB(Resource):
     @rec.expect(receive_edb_parser)
     def post(self):
         """
-        json str:{"codes": "M0017126,M0017127,M0017128", "begin_time": "2016-11-10", "end_time": "2017-11-10", "options": "Fill=Previous"}
+        json str:{"codes": "M0017126,M0017127,M0017128",
+            "begin_time": "2016-11-10", "end_time": "2017-11-10", "options": "Fill=Previous"}
         :return: 返回万得返回数据dict
         """
         args = receive_edb_parser.parse_args()
         logger.info('/edb/ args:%s', args)
-        # codes = args['codes']
+        codes = args['codes']
         # begin_time = args['begin_time']
         # end_time = args['end_time']
         # options = args['options']
@@ -574,16 +667,27 @@ class ReceiveEDB(Resource):
             args['options'] = None
         if not w.isconnected():
             w.start()
-        ret_data = w.edb(**args)
-        error_code = ret_data.ErrorCode
-        if error_code != 0:
-            msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
-            logger.error('wst(%s) ErrorCode=%d %s' % (args, error_code, msg))
-            raise RequestError(msg, None, error_code)
-        # if ret_data.ErrorCode != 0:
-        #     logger.error('wsd("%s", "%s", "%s", "%s", "%s") ErrorCode=%d' % (
-        #         codes, fields, begin_time, end_time, options, ret_data.ErrorCode))
-        #     return {'error_code': ret_data.ErrorCode}, 404
+        ret_data = None
+        for nth in range(2):
+            ret_data = w.edb(**args)
+            error_code = ret_data.ErrorCode
+            if error_code != 0:
+                if nth == 0 and error_code == -40521010:
+                    w.start()
+                    logger.warning('尝试重新登陆成功，再次调用函数')
+                    continue
+
+                msg = ERROR_CODE_MSG_DIC.setdefault(error_code, "")
+                logger.error('wst(%s) ErrorCode=%d %s' % (args, error_code, msg))
+                raise RequestError(msg, None, error_code)
+            else:
+                break
+        else:
+            if ret_data is None:
+                msg = 'wst(%s) ret_data is None' % args
+                logger.error(msg)
+                raise RequestError(msg, None, 0)
+
         # 将 Data数据中所有 datetime date 类型的数据转换为 string
         data_len = len(ret_data.Data)
 
@@ -592,6 +696,7 @@ class ReceiveEDB(Resource):
             data_len2 = len(data)
             if data_len2 > 0:
                 # 取出第一个部位None的数据
+                item_check = None
                 for item_check in data:
                     if item_check is not None:
                         break
@@ -606,4 +711,3 @@ class ReceiveEDB(Resource):
         ret_dic = ret_df.to_dict()
         # print('ret_dic:\n', ret_dic)
         return ret_dic
-
