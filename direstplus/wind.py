@@ -28,6 +28,7 @@ ERROR_CODE_MSG_DIC = {
     -40521009: "数据解码失败。检查输入参数是否正确，如：日期参数注意大小月月末及短二月",
     -40521010: "网络超时",
     -40522017: "数据提取量超限",
+    -40522006: "指标语法错误。请检查代码中的相关指标是否正确，无缺失或重复",
 }
 
 # parser
@@ -180,6 +181,7 @@ class ReceiveWSET(Resource):
             error_code = ret_data.ErrorCode
             if error_code != 0:
                 if nth == 0 and error_code == -40521010:
+                    w.stop()
                     w.start()
                     logger.warning('尝试重新登陆成功，再次调用函数')
                     continue
@@ -249,6 +251,7 @@ class ReceiveWSD(Resource):
             error_code = ret_data.ErrorCode
             if error_code != 0:
                 if nth == 0 and error_code == -40521010:
+                    w.stop()
                     w.start()
                     logger.warning('尝试重新登陆成功，再次调用函数')
                     continue
@@ -323,6 +326,7 @@ class ReceiveWSI(Resource):
             error_code = ret_data.ErrorCode
             if error_code != 0:
                 if nth == 0 and error_code == -40521010:
+                    w.stop()
                     w.start()
                     logger.warning('尝试重新登陆成功，再次调用函数')
                     continue
@@ -388,6 +392,7 @@ class ReceiveWSS(Resource):
             error_code = ret_data.ErrorCode
             if error_code != 0:
                 if nth == 0 and error_code == -40521010:
+                    w.stop()
                     w.start()
                     logger.warning('尝试重新登陆成功，再次调用函数')
                     continue
@@ -445,6 +450,7 @@ class ReceiveTdaysoffset(Resource):
             error_code = ret_data.ErrorCode
             if error_code != 0:
                 if nth == 0 and error_code == -40521010:
+                    w.stop()
                     w.start()
                     logger.warning('尝试重新登陆成功，再次调用函数')
                     continue
@@ -495,6 +501,7 @@ class ReceiveTdays(Resource):
             error_code = ret_data.ErrorCode
             if error_code != 0:
                 if nth == 0 and error_code == -40521010:
+                    w.stop()
                     w.start()
                     logger.warning('尝试重新登陆成功，再次调用函数')
                     continue
@@ -548,6 +555,7 @@ class ReceiveWSQ(Resource):
             error_code = ret_data.ErrorCode
             if error_code != 0:
                 if nth == 0 and error_code == -40521010:
+                    w.stop()
                     w.start()
                     logger.warning('尝试重新登陆成功，再次调用函数')
                     continue
@@ -608,6 +616,7 @@ class ReceiveWST(Resource):
             error_code = ret_data.ErrorCode
             if error_code != 0:
                 if nth == 0 and error_code == -40521010:
+                    w.stop()
                     w.start()
                     logger.warning('尝试重新登陆成功，再次调用函数')
                     continue
@@ -673,6 +682,7 @@ class ReceiveEDB(Resource):
             error_code = ret_data.ErrorCode
             if error_code != 0:
                 if nth == 0 and error_code == -40521010:
+                    w.stop()
                     w.start()
                     logger.warning('尝试重新登陆成功，再次调用函数')
                     continue
