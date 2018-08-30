@@ -1,4 +1,12 @@
-# DIRestPlus [![Build Status](https://travis-ci.org/DataIntegrationAlliance/DIRestPlus.svg?branch=master)](https://travis-ci.org/DataIntegrationAlliance/DIRestPlus)
+# DIRestPlus 
+[![Build Status](https://travis-ci.org/DataIntegrationAlliance/DIRestPlus.svg?branch=master)](https://travis-ci.org/DataIntegrationAlliance/DIRestPlus)
+[![GitHub issues](https://img.shields.io/github/issues/DataIntegrationAlliance/DIRestPlus.svg)](https://github.com/DataIntegrationAlliance/DIRestPlus/issues)
+[![GitHub forks](https://img.shields.io/github/forks/DataIntegrationAlliance/DIRestPlus.svg)](https://github.com/DataIntegrationAlliance/DIRestPlus/network)
+[![GitHub stars](https://img.shields.io/github/stars/DataIntegrationAlliance/DIRestPlus.svg)](https://github.com/DataIntegrationAlliance/DIRestPlus/stargazers)
+[![GitHub license](https://img.shields.io/github/license/DataIntegrationAlliance/DIRestPlus.svg)](https://github.com/DataIntegrationAlliance/DIRestPlus/blob/master/LICENSE)
+[![HitCount](http://hits.dwyl.io/DataIntegrationAlliance/https://github.com/DataIntegrationAlliance/DIRestPlus.svg)](http://hits.dwyl.io/DataIntegrationAlliance/https://github.com/DataIntegrationAlliance/DIRestPlus)
+[![Twitter](https://img.shields.io/twitter/url/https/github.com/DataIntegrationAlliance/DIRestPlus.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FDataIntegrationAlliance%2FDIRestPlus)
+
 Data Integration RESTPlus，通过Flask-RESTPlus 构建接口框架，将Wind、iFinD、Choice等进行统一封装
 
 ## 启动（两步）
