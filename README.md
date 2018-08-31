@@ -5,6 +5,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/DataIntegrationAlliance/DIRestPlus.svg)](https://github.com/DataIntegrationAlliance/DIRestPlus/stargazers)
 [![GitHub license](https://img.shields.io/github/license/DataIntegrationAlliance/DIRestPlus.svg)](https://github.com/DataIntegrationAlliance/DIRestPlus/blob/master/LICENSE)
 [![HitCount](http://hits.dwyl.io/DataIntegrationAlliance/https://github.com/DataIntegrationAlliance/DIRestPlus.svg)](http://hits.dwyl.io/DataIntegrationAlliance/https://github.com/DataIntegrationAlliance/DIRestPlus)
+[![Pypi](https://img.shields.io/badge/pypi-wheel-blue.svg)](https://pypi.org/project/DIRestInvoker/)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/DataIntegrationAlliance/DIRestPlus.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FDataIntegrationAlliance%2FDIRestPlus)
 
 Data Integration RESTPlus，通过Flask-RESTPlus 构建接口框架，将Wind、iFinD、Choice等进行统一封装
