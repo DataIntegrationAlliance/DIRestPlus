@@ -5,7 +5,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/DataIntegrationAlliance/DIRestPlus.svg)](https://github.com/DataIntegrationAlliance/DIRestPlus/stargazers)
 [![GitHub license](https://img.shields.io/github/license/DataIntegrationAlliance/DIRestPlus.svg)](https://github.com/DataIntegrationAlliance/DIRestPlus/blob/master/LICENSE)
 [![HitCount](http://hits.dwyl.io/DataIntegrationAlliance/https://github.com/DataIntegrationAlliance/DIRestPlus.svg)](http://hits.dwyl.io/DataIntegrationAlliance/https://github.com/DataIntegrationAlliance/DIRestPlus)
-[![Pypi](https://img.shields.io/badge/pypi-wheel-blue.svg)](https://pypi.org/project/DIRestInvoker/)
+[![Pypi](https://img.shields.io/badge/pypi-wheel-blue.svg)](https://pypi.org/project/DIRestPlus/)
 [![Twitter](https://img.shields.io/twitter/url/https/github.com/DataIntegrationAlliance/DIRestPlus.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FDataIntegrationAlliance%2FDIRestPlus)
 
 Data Integration RESTPlus，通过Flask-RESTPlus 构建接口框架，将Wind、iFinD、Choice等进行统一封装
@@ -15,6 +15,11 @@ Data Integration RESTPlus，通过Flask-RESTPlus 构建接口框架，将Wind、
 run.py 文件
 ```python
 from direstplus import start_service
+from direstplus.config import config
+# 配置 ifind 账号、密码
+config.THS_LOGIN_USER_NAME = '***'
+config.THS_LOGIN_PASSWORD = '***'
+# 
 start_service()
 ```
 2. 启动脚本
