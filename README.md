@@ -67,3 +67,22 @@ COPYRIGHT (C) 2017 WIND INFORMATION CO., LTD. ALL RIGHTS RESERVED.
 IN NO CIRCUMSTANCE SHALL WIND BE RESPONSIBLE FOR ANY DAMAGES OR LOSSES CAUSED BY USING WIND QUANT API FOR Python.
 .ErrorCode=0
 .Data=[OK!]
+
+## 已知bug
+
+错误信息：
+> ImportError: cannot import name 'cached_property' from 'werkzeug' (/usr/local/lib/python3.7/site-packages/werkzeug/__init__.py)
+
+解决方案
+#### 1）：
+
+新版本的 werkzeug 需要显式导入该模块
+在报错的文件（我这里是werkzeug/init.py）里添加以下代码可以解决该问题
+from werkzeug.utils import cached_property
+
+备注：
+CentOS系统下文件路径：/usr/local/lib/python3.7/site-packages/werkzeug
+Ubuntu系统下文件路径：/usr/local/lib/python3.7/dist-packages/werkzeug
+
+#### 2） 将低版本
+pip install werkzeug==0.16.0
