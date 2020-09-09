@@ -203,18 +203,18 @@ class ReceiveWSET(Resource):
         # print('ret_data.Data\n', ret_data.Data)
 
         for n_data in range(data_count):
-            data = ret_data.Data[n_data]
-            data_len2 = len(data)
-            if data_len2 > 0:
-                # 取出第一个部位None的数据
+            data_list = ret_data.Data[n_data]
+            data_list_len = len(data_list)
+            if data_list_len > 0:
+                # 取出第一个不为None的数据
                 item_check = None
-                for item_check in data:
+                for item_check in data_list:
                     if item_check is not None:
                         break
                 # 进行类型检查，如果发现是 datetime, date 类型之一，则进行类型转换
                 if item_check is not None and type(item_check) in (datetime, date):
-                    ret_data.Data[n_data] = [format_2_date_str(dt) for dt in data]
-                    logger.info('%d column["%s"]  date to str', n_data, ret_data.Fields[n_data])
+                    ret_data.Data[n_data] = [format_2_date_str(dt) for dt in data_list]
+                    logger.debug('Data[%d] column["%s"]  date to str', n_data, ret_data.Fields[n_data])
 
         ret_df = pd.DataFrame(ret_data.Data, index=ret_data.Fields, columns=ret_data.Codes)
         # print('ret_df\n', ret_df)
