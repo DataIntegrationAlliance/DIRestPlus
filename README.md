@@ -34,6 +34,8 @@ python3 run.py
 ## 外部环境依赖及安装配置
 
 ### ifind 环境配置
+对于虚拟环境， iFind自带修复工具修复不成功，需要手动进行修复，命令如下：
+
 ```commandline
 python "d:\IDE\iFinD\bin\x64\installiFinDPy.py" "D:\IDE\iFinD\bin"
 ```
