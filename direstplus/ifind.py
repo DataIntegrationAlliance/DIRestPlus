@@ -668,7 +668,7 @@ class THSDataPool(Resource):
                     continue
                 data = table['table']
                 data_df = pd.DataFrame(data)
-                if table['thscode'] != '':
+                if 'thscode' in tables and table['thscode'] != '':
                     data_df['ths_code'] = table['thscode']
                 data_df_list.append(data_df)
 
