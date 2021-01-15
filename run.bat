@@ -1,2 +1,5 @@
 rem flask run
-.\venv\Scripts\flask.exe run
+rem .\venv\Scripts\flask.exe run
+
+call .\venv\ScriptS\activate
+python run.py
