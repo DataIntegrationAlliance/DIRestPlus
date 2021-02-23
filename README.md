@@ -37,13 +37,13 @@ python3 run.py
 对于虚拟环境， iFind自带修复工具修复不成功，需要手动进行修复，命令如下：
 
 ```commandline
-python "d:\IDE\iFinD\bin\x64\installiFinDPy.py" "D:\IDE\iFinD\bin"
+python "d:\TradeTools\iFinD\DataInterface_free_Windows\bin\x64\installiFinDPy.py" "d:\TradeTools\iFinD\DataInterface_free_Windows\bin"
 ```
 
 #### 测试接口文件安装是否成功
 ```python
 from iFinDPy import *
-# 返回 D:\WSPych\RestIFindPy\venv\lib\site-packages\iFinDPy.pth
+# 返回 D:\github\DIRestPlus\venv\lib\site-packages\iFinDPy.pth
 # 说明安装成功
 
 # 登陆
